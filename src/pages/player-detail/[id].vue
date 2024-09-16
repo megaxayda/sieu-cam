@@ -10,10 +10,16 @@
 
   <v-sheet v-if="data" class="pa-4 d-flex flex-column ga-3 align-center">
     <v-avatar color="surface-variant">{{ data[0].name[0] }}</v-avatar>
+    <p><span class="text-green">Win {{ data[0].win }}</span> - <span class="text-red">Lose {{ data[0].lose }}</span>
+    </p>
     <v-text-field label="Name" variant="outlined" v-model="name" class="w-100" name="name"
       :disabled="!session?.session"></v-text-field>
-    <p>Win {{ data[0].win }} - Lose {{ data[0].lose }}</p>
-    <v-btn v-if="session?.session" variant="outlined" color="secondary" @click="onSave">Save</v-btn>
+
+    <v-btn block="" v-if="session?.session" variant="outlined" color="secondary" :disabled="!mutation.isPending"
+      @click="onSave">Save</v-btn>
+    <v-spacer></v-spacer>
+    <v-btn block v-if="session?.session" variant="elevated" color="error" :disabled="!deleteMutation.isPending"
+      @click="onDelete">Delete</v-btn>
 
 
     <v-snackbar v-model="snackbar" timeout="2000" variant="elevated" color="success">
@@ -26,7 +32,7 @@
 
 <script setup>
 
-import { getPlayerDetail, updatePlayer, getSession } from '@/api';
+import { getPlayerDetail, updatePlayer, deletePlayer, getSession } from '@/api';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query'
 import { ref } from 'vue';
 
@@ -54,11 +60,25 @@ const mutation = useMutation({
     queryClient.invalidateQueries({ queryKey: ['getPlayers'] })
     queryClient.invalidateQueries({ queryKey: ['getPlayerDetail', route.currentRoute._value.params.id] })
     snackbar.value = true
+    route.push({ path: '/players' })
+  },
+})
+
+const deleteMutation = useMutation({
+  mutationFn: deletePlayer,
+  onSuccess: () => {
+    // Invalidate and refetch
+    queryClient.invalidateQueries({ queryKey: ['getPlayers'] })
+    route.push({ path: '/players', replace: true })
   },
 })
 
 const onSave = () => {
   mutation.mutate({ id: route.currentRoute._value.params.id, name: name.value })
+}
+
+const onDelete = () => {
+  deleteMutation.mutate(route.currentRoute._value.params.id)
 }
 
 const { data: session } = useQuery({

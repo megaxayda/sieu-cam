@@ -29,91 +29,13 @@
 </template>
 
 <script setup>
-const players = [
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Tải',
-    win: 23,
-    lose: 1
-  },
-  {
-    name: 'Sơn',
-    win: 23,
-    lose: 1
-  },
-]
-
 import { getPlayers, getSession } from '@/api';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query'
 
 const queryClient = useQueryClient()
 
 const { isPending, isError, data, error } = useQuery({
-  queryKey: ['players'],
+  queryKey: ['getPlayers'],
   queryFn: getPlayers,
 })
 
