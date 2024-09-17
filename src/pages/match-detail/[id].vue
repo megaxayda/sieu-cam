@@ -78,7 +78,7 @@ const onTeam2Win = () => {
 }
 
 const onDelete = () => {
-    deleteMutation.mutate(router.currentRoute._value.params.id)
+    deleteMutation.mutate({ id: router.currentRoute._value.params.id, data: data?.value?.[0] })
 }
 </script>
 

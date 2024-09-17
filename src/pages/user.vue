@@ -7,6 +7,8 @@
 
     <div v-if="data && data.session">
       {{ data.session.user.email }}
+
+      <v-btn block class="mt-4" color="error" text="Logout" variant="elevated" @click="mutationLogout.mutate()"></v-btn>
     </div>
 
     <div v-else>
@@ -28,7 +30,7 @@
 </template>
 
 <script setup>
-import { getSession, signIn } from '@/api';
+import { getSession, signIn, signOut } from '@/api';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query'
 
 const queryClient = useQueryClient()
@@ -44,9 +46,14 @@ const { isPending, isError, data, error } = useQuery({
 const mutation = useMutation({
   mutationFn: signIn,
   onSuccess: () => {
-    // Invalidate and refetch
     queryClient.invalidateQueries({ queryKey: ['getSession'] })
-    // router.push({ path: '/user', replace: true })
+  },
+})
+
+const mutationLogout = useMutation({
+  mutationFn: signOut,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['getSession'] })
   },
 })
 
