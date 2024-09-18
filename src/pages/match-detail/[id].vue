@@ -6,7 +6,7 @@
         <v-toolbar-title>Match Detail</v-toolbar-title>
     </v-toolbar>
 
-    <v-container class="d-flex flex-column ga-3">
+    <v-container v-if="isFetched" class="d-flex flex-column ga-3">
 
         <p class="text-subtitle-1">{{ convertToLocalTime(data?.[0]?.created_at) }}</p>
 
@@ -29,7 +29,7 @@
         <v-spacer></v-spacer>
         <v-btn v-if="!data?.[0]?.win_team" block text="Team 2 Win" variant="outlined" @click="onTeam2Win"></v-btn>
         <v-spacer></v-spacer>
-        <v-btn block text="Delete" variant="elevated" color="error" @click="onDelete"></v-btn>
+        <v-btn v-if="session?.session" block text="Delete" variant="elevated" color="error" @click="onDelete"></v-btn>
 
     </v-container>
 
@@ -45,7 +45,7 @@ import { ref } from 'vue';
 const router = useRouter()
 const queryClient = useQueryClient()
 
-const { isPending, isError, data, error } = useQuery({
+const { isPending, isError, data, error, isFetched } = useQuery({
     queryKey: ['getMatchDetail', router.currentRoute._value.params.id],
     queryFn: async () => await getMatchDetail(router.currentRoute._value.params.id),
 })
@@ -80,6 +80,11 @@ const onTeam2Win = () => {
 const onDelete = () => {
     deleteMutation.mutate({ id: router.currentRoute._value.params.id, data: data?.value?.[0] })
 }
+
+const { data: session } = useQuery({
+    queryKey: ['getSession'],
+    queryFn: getSession,
+})
 </script>
 
 <style lang="css" scoped></style>

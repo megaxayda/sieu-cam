@@ -71,9 +71,6 @@ watch(player2, (newValue, oldValue) => {
   players1.value = players.value?.filter(e => ![newValue, player3.value, player4.value].includes(e.id))
   players3.value = players.value?.filter(e => ![newValue, player1.value, player4.value].includes(e.id))
   players4.value = players.value?.filter(e => ![newValue, player1.value, player3.value].includes(e.id))
-  console.log(players.value)
-  console.log(player1.value)
-  console.log(newValue, player1.value, player4.value)
 })
 watch(player3, (newValue, oldValue) => {
   players1.value = players.value?.filter(e => ![newValue, player2.value, player4.value].includes(e.id))

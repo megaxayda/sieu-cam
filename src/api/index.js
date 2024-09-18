@@ -20,7 +20,6 @@ export async function createPlayer(player) {
 }
 
 export async function updatePlayer({ id, name }) {
-  console.log(name);
   const { data, error } = await supabase
     .from("players")
     .update({ name })

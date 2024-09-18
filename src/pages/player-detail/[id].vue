@@ -13,7 +13,7 @@
     <p><span class="text-green">Win {{ data[0].win }}</span> - <span class="text-red">Lose {{ data[0].lose }}</span>
     </p>
     <v-text-field label="Name" variant="outlined" v-model="name" class="w-100" name="name"
-      :disabled="!session?.session"></v-text-field>
+      :readonly="!session?.session"></v-text-field>
 
     <v-btn block="" v-if="session?.session" variant="outlined" color="secondary" :disabled="!mutation.isPending"
       @click="onSave">Save</v-btn>
@@ -86,8 +86,6 @@ const { data: session } = useQuery({
   queryFn: getSession,
 })
 
-
-// console.log(data?.value?.[0]?.id)
 </script>
 
 <style scoped lang="scss"></style>
